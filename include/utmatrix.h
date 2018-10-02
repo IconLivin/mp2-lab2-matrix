@@ -264,7 +264,10 @@ bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
 template <class ValType> // сравнение
 bool TMatrix<ValType>::operator!=(const TMatrix<ValType> &mt) const
 {
-	return !((*this) == mt);
+	for (int i = 0; i<Size; i++)
+		if (pVector[i] != mt.pVector[i])
+			return true;
+	return false;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // присваивание
