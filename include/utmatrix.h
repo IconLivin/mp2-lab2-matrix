@@ -288,13 +288,23 @@ TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 template <class ValType> // сложение
 TMatrix<ValType> TMatrix<ValType>::operator+(const TMatrix<ValType> &mt)
 {
-	return TVector<TVector<ValType>>::operator+(mt);
+	if(Size!=mt.Size||StartIndex!=mt.StartIndex)
+		throw mt.Size;
+	TMatrix<ValType> res(Size);
+	for(int i=0;i<Size;i++)
+		res.pVector[i]=pVector[i]+mt.pVector[i];
+	return res;
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // вычитание
 TMatrix<ValType> TMatrix<ValType>::operator-(const TMatrix<ValType> &mt)
 {
-	return TVector<TVector<ValType>>::operator-(mt);
+	if(Size!=mt.Size||StartIndex!=mt.StartIndex)
+		throw mt.Size;
+	TMatrix<ValType> res(Size);
+	for(int i=0;i<Size;i++)
+		res.pVector[i]=pVector[i]-mt.pVector[i];
+	return res;
 } /*-------------------------------------------------------------------------*/
 
 // TVector О3 Л2 П4 С6
