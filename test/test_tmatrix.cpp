@@ -37,14 +37,15 @@ TEST(TMatrix, copied_matrix_is_equal_to_source_one)
 
 TEST(TMatrix, copied_matrix_has_its_own_memory)
 {
-	TMatrix<int> *m;
-	m = new TMatrix<int>[3];
-	m[0][0] = 1;
-	m[0][1] = 2;
-	m[1][1] = 1;
 	TMatrix<int> b;
-	b = *m;
-	delete[] m;
+	if (1)
+	{
+		TMatrix<int> m(3);
+		m[0][0] = 1;
+		m[0][1] = 2;
+		m[1][1] = 1;
+		b = m;
+	}
 	EXPECT_EQ(1, b[0][0]);
 	EXPECT_EQ(2, b[0][1]);
 }
@@ -85,7 +86,7 @@ TEST(TMatrix, can_assign_matrix_to_itself)
 
 TEST(TMatrix, can_assign_matrices_of_equal_size)
 {
-	TMatrix<int> a(2),b(3);
+	TMatrix<int> a(2),b(2);
 	a[0][0] = 1;
 	a[0][1] = 2;
 	a[1][1] = 3;

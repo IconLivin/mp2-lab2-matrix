@@ -41,14 +41,15 @@ TEST(TVector, copied_vector_is_equal_to_source_one)
 
 TEST(TVector, copied_vector_has_its_own_memory)
 {
-	TVector<int> *a;
-	a = new TVector<int>[3];
-	a[0] = 1;
-	a[1] = 2;
-	a[2] = 3;
 	TVector<int> b;
-	b = a;
-	delete[] a;
+	if (1)
+	{
+		TVector<int> a(3);
+		a[0] = 1;
+		a[1] = 2;
+		a[2] = 3;
+		b = a;
+	}
 	EXPECT_EQ(1, b[0]);
 	EXPECT_EQ(3, b[2]);
 }
