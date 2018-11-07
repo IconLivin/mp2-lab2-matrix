@@ -38,14 +38,12 @@ TEST(TMatrix, copied_matrix_is_equal_to_source_one)
 TEST(TMatrix, copied_matrix_has_its_own_memory)
 {
 	TMatrix<int> b;
-	if (1)
-	{
-		TMatrix<int> m(3);
-		m[0][0] = 1;
-		m[0][1] = 2;
-		m[1][1] = 1;
-		b = m;
-	}
+	TMatrix<int> *m=new TMatrix<int>;
+		(*m)[0][0] = 1;
+		(*m)[0][1] = 2;
+		(*m)[1][1] = 1;
+		b = *m;
+		delete m;
 	EXPECT_EQ(1, b[0][0]);
 	EXPECT_EQ(2, b[0][1]);
 }
@@ -90,7 +88,9 @@ TEST(TMatrix, can_assign_matrices_of_equal_size)
 	a[0][0] = 1;
 	a[0][1] = 2;
 	a[1][1] = 3;
+	b = a;
 	EXPECT_NO_THROW(b = a);
+	EXPECT_EQ(a[0][1], b[0][1]);
 }
 
 TEST(TMatrix, assign_operator_change_matrix_size)
@@ -109,7 +109,9 @@ TEST(TMatrix, can_assign_matrices_of_different_size)
 	a[0][0] = 1;
 	a[0][1] = 1;
 	a[1][1] = 1;
+	b = a;
 	EXPECT_NO_THROW(b = a);
+	EXPECT_EQ(a[0][1], b[0][1]);
 }
 
 TEST(TMatrix, compare_equal_matrices_return_true)
@@ -140,11 +142,19 @@ TEST(TMatrix, matrices_with_different_size_are_not_equal)
 
 TEST(TMatrix, can_add_matrices_with_equal_size)
 {
-	TMatrix<int> a(2);
-	a[0][0] = 1;
-	a[0][1] = 1;
-	a[1][1] = 1;
-	EXPECT_NO_THROW(a + a);
+	const int n=10;
+	TMatrix<int> a(n),b(n),c(n);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = i; j < n; j++)
+		{
+			a[i][j] = i * 2 + j * 3;
+			b[i][j] = i * 4 + j * 2;
+			c[i][j] = 6 * i + 5 * j;
+		}
+	}
+	EXPECT_NO_THROW(a + b);
+	EXPECT_EQ(c, a + b);
 	
 }
 
@@ -156,11 +166,23 @@ TEST(TMatrix, cant_add_matrices_with_not_equal_size)
 
 TEST(TMatrix, can_subtract_matrices_with_equal_size)
 {
-	TMatrix<int> a(2);
-	a[0][0] = 1;
-	a[0][1] = 1;
-	a[1][1] = 1;
-	EXPECT_NO_THROW(a - a);
+	const int n = 3;
+	TMatrix<int> a(n), b(n), c(n);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = i; j < n; j++)
+		{
+			b[i][j] = i * 2;
+			a[i][j] = j * 3;
+			c[i][j] = 3 * j - 2 * i;
+		}
+	}
+	cout << a << endl << b << endl << c << endl;
+	EXPECT_NO_THROW(a - b);
+	bool flag = 0;
+	flag = c == a - b;
+	EXPECT_EQ(flag, true);
+
 }
 
 TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
